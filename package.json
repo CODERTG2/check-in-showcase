@@ -1,0 +1,29 @@
+{
+  "name": "check-in-showcase",
+  "version": "1.0.0",
+  "description": "Check-in system for Axiom for the CPS Showcase",
+  "main": "index.js",
+  "scripts": {
+    "test": "server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CODERTG2/check-in-showcase.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CODERTG2/check-in-showcase/issues"
+  },
+  "homepage": "https://github.com/CODERTG2/check-in-showcase#readme",
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "connect-flash": "^0.1.1",
+    "connect-mongo": "^5.1.0",
+    "dotenv": "^16.5.0",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-session": "^1.18.1",
+    "mongoose": "^8.13.2"
+  }
+}
