@@ -17,6 +17,7 @@
 <body>
     <div class="banner">
         <h1>CPS Showcase</h1>
+        <button class="refresh" onclick="">Refresh</button>
     </div>
     
     <div class="form-container">
@@ -24,6 +25,7 @@
         <form action="/home" method="POST">
             <input type="text" name="name" placeholder="Name" required>
             <input type="text" name="FLLteamnum" placeholder="Team Number" required>
+            <input type="text" name="robotNumber" placeholder="Robot" required>
             <select class="custom-select" name="checking" required>
                 <option value="in">Checking In</option>
                 <option value="out">Checking Out</option>
