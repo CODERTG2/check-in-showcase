@@ -18,42 +18,68 @@ body{
 
 .banner{
     position: fixed;
-    top: 5px;
-    left: 0px;
+    top: 0;
+    left: 0;
     width: 100%;
-    margin: 0 auto;
     background-color: var(--background-color-blue);
-    border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    flex-direction: row;
+    display: flex;
     justify-content: center;
     align-items: center;
+    padding: 20px;
+    z-index: 1000;
 }
 
 .banner h1 {
     font-size: 2.5rem;
-    margin-bottom: 20px;
+    margin: 0;
+    padding: 0;
     text-align: center;
+}
+
+.banner-left {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.banner-left p {
+    margin: 0;
+    padding: 10px;
+    font-size: 0.9rem;
+    color: var(--primary-color);
 }
 
 .banner button {
     background: rgba(255, 255, 255, 0.2);
     color: var(--primary-color);
     border: none;
-    padding: 14px 28px;
+    padding: 10px 20px;
     border-radius: 8px;
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease;
-    right: 60px;
-    top: 26px;
-    position: absolute;
+    margin-top: 55px;
 }
 
 .banner button:hover {
     background: rgba(255, 255, 255, 0.3);
     transform: translateY(-2px);
+}
+
+.banner-left {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
 }
 
 .form-container {
