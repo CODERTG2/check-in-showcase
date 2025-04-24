@@ -35,7 +35,7 @@
             <input type="text" name="name" placeholder="Name" required>
             <input type="text" name="teamNumber" placeholder="Team Number" required>
             <input type="text" name="barcode" placeholder="Robot" required>
-            <select class="custom-select" name="checking" required>
+            <select class="custom-select" name="entryType" required>
                 <option value="in">Checking In</option>
                 <option value="out">Checking Out</option>
             </select>
@@ -50,7 +50,12 @@
                     'Content-Type': 'application/json'
                 }
             })
-            .then(locals.updated = false);
+            .then(() => {
+                const statusElement = document.querySelector('.banner-left p');
+                if (statusElement) {
+                    statusElement.textContent = "Updated!";
+                }
+            })
         }
     </script>
 </body>

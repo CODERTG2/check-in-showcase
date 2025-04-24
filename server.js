@@ -33,11 +33,11 @@ app.use(session({
     cookie: {maxAge: 86400000}
 }));
 app.use(flash());
-
 app.use((req, res, next) => {
     res.locals.flash = req.flash();
     next();
 });
+app.use(express.json())
 
 app.get('/', (req, res) => {
     let errormsg;
@@ -54,6 +54,7 @@ app.post('/home', (req, res) => {
     const {name, teamNumber, barcode, entryType} = req.body;
     const team = teams.find(t => t["Team Number"] === String(teamNumber));
     const robot = robots.find(r => r["Barcode"] === String(barcode));
+    console.log("posting:", name, teamNumber, barcode, entryType);
 
     if (!team) {
         req.flash('error', 'Team not found');
@@ -69,15 +70,18 @@ app.post('/home', (req, res) => {
         teamNumber: parseInt(teamNumber),
         school: team["School"],
         coach: team["Coach"],
-        robot: robot["Robot Name"],
+        robot: robot["Robot"],
         entryType
     });
+    console.log("new entry:", newEntry);
     newEntry.save()
         .then(() => {
+            console.log("saved");
             req.flash('success', 'Entry created successfully');
             res.redirect('/');
         })
         .catch(err => {
+            console.error("Error saving entry:", err);
             req.flash('error', 'Error creating entry');
             res.redirect('/');
         });
@@ -85,13 +89,12 @@ app.post('/home', (req, res) => {
 
 app.post('/api/update-sheet', async (req, res) => {
     try {
-      const entries = await Entry.find().sort({ createdAt: -1 });
-      await sheetsService.updateSheet(entries);
+        const entries = await Entry.find().sort({ createdAt: -1 });
+        await sheetsService.updateSheet(entries);
       
-      req.app.locals.updated = true;
+        req.app.locals.updated = true;
       
-      // Return success response
-      res.json({ success: true, message: 'Sheet updated successfully' });
+        res.json({ success: true, message: 'Sheet updated successfully' });
     } catch (error) {
       console.error('Error updating sheet:', error);
       res.status(500).json({ success: false, message: 'Failed to update sheet' });

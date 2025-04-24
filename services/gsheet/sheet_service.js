@@ -36,13 +36,18 @@ class GoogleSheetsService {
             ]);
 
             const values = [header, ...rows];
-
+            
             await this.sheets.spreadsheets.values.clear({
                 spreadsheetId: this.spreadsheetId,
-                range: 'Sheet1!A1:G1000',
-                valueInputOption: 'RAW',
-                resource: {values}
+                range: 'Entries!A1:G1000',
             })
+            await this.sheets.spreadsheets.values.update({
+                spreadsheetId: this.spreadsheetId,
+                range: 'Entries!A1',
+                valueInputOption: 'RAW',
+                resource: {values},
+            });
+            console.log('Google Sheet updated successfully');
         }
         catch (error) {
             console.error('Error updating Google Sheet:', error.message);
