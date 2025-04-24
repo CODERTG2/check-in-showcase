@@ -24,14 +24,14 @@ class GoogleSheetsService {
 
     async updateSheet(entries) {
         try {
-            const header = ['Timestamp', 'Name', 'Team Number', 'School', 'Coach', 'Robot Number', 'Entry Type'];
+            const header = ['Timestamp', 'Name', 'Team Number', 'School', 'Coach', 'Robot', 'Entry Type'];
             const rows = entries.map(entry => [
                 new Date().toISOString(),
                 entry.name,
                 entry.teamNumber,
                 entry.school,
                 entry.coach,
-                entry.robotNumber,
+                entry.robot,
                 entry.entryType
             ]);
 

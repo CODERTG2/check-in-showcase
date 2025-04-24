@@ -12,12 +12,12 @@ const Entry = require('./models/Entry');
 connectDB();
 
 const fs = require('fs');
-const sheetsService = require('./services/gsheet/sheet_service');
-sheetsService.initialize(JSON.parse(fs.readFileSync(path.join(__dirname, 'config', 'Credentials.json'))), 
-    process.env.SPREADSHEET_ID);
+const GoogleSheetsService = require('./services/gsheet/sheet_service');
+const sheetsService = new GoogleSheetsService(JSON.parse(fs.readFileSync(path.join(__dirname, 'config', 'Credentials.json'))), process.env.SPREADSHEET_ID);
+sheetsService.initialize()
 
 const teams = JSON.parse(fs.readFileSync(path.join(__dirname, 'config', 'FLL.json')));
-const robots = JSON.parse(fs.readFileSync(path.join(__dirname, 'config', 'Robots.json')));
+const robots = JSON.parse(fs.readFileSync(path.join(__dirname, 'config', 'Robot.json')));
 
 const app = express();
 
@@ -40,26 +40,33 @@ app.use((req, res, next) => {
 });
 
 app.get('/', (req, res) => {
-    res.render('home', {updated: true});
+    let errormsg;
+    if (req.flash('error')) {
+        errormsg = req.flash('error');
+    }
+    else {
+        errormsg = null;
+    }
+    res.render('home', {updated: false, message: errormsg});
 });
 
 app.post('/home', (req, res) => {
-    const {name, teamNumber, robotNumber, entryType} = req.body;
+    const {name, teamNumber, barcode, entryType} = req.body;
     const team = teams.find(t => t["Team Number"] === String(teamNumber));
-    const robot = robots.find(r => r["Robot Number"] === String(robotNumber));
+    const robot = robots.find(r => r["Barcode"] === String(barcode));
 
     if (!team) {
         req.flash('error', 'Team not found');
-        return res.redirect('/home');
+        return res.redirect('/');
     }
     if (!robot) {
         req.flash('error', 'Robot not found');
-        return res.redirect('/home');
+        return res.redirect('/');
     }
 
     const newEntry = new Entry({
         name,
-        teamNumber,
+        teamNumber: parseInt(teamNumber),
         school: team["School"],
         coach: team["Coach"],
         robot: robot["Robot Name"],
@@ -68,13 +75,28 @@ app.post('/home', (req, res) => {
     newEntry.save()
         .then(() => {
             req.flash('success', 'Entry created successfully');
-            res.redirect('/home');
+            res.redirect('/');
         })
         .catch(err => {
             req.flash('error', 'Error creating entry');
-            res.redirect('/home');
+            res.redirect('/');
         });
 });
+
+app.post('/api/update-sheet', async (req, res) => {
+    try {
+      const entries = await Entry.find().sort({ createdAt: -1 });
+      await sheetsService.updateSheet(entries);
+      
+      req.app.locals.updated = true;
+      
+      // Return success response
+      res.json({ success: true, message: 'Sheet updated successfully' });
+    } catch (error) {
+      console.error('Error updating sheet:', error);
+      res.status(500).json({ success: false, message: 'Failed to update sheet' });
+    }
+  });
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
