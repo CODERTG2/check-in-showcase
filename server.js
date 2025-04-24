@@ -54,7 +54,6 @@ app.post('/home', (req, res) => {
     const {name, teamNumber, barcode, entryType} = req.body;
     const team = teams.find(t => t["Team Number"] === String(teamNumber));
     const robot = robots.find(r => r["Barcode"] === String(barcode));
-    console.log("posting:", name, teamNumber, barcode, entryType);
 
     if (!team) {
         req.flash('error', 'Team not found');
@@ -73,15 +72,12 @@ app.post('/home', (req, res) => {
         robot: robot["Robot"],
         entryType
     });
-    console.log("new entry:", newEntry);
     newEntry.save()
         .then(() => {
-            console.log("saved");
             req.flash('success', 'Entry created successfully');
             res.redirect('/');
         })
         .catch(err => {
-            console.error("Error saving entry:", err);
             req.flash('error', 'Error creating entry');
             res.redirect('/');
         });
