@@ -82,6 +82,40 @@ body{
     gap: 10px;
 }
 
+.flash-messages {
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    max-width: 500px;
+    z-index: 1001;
+}
+
+.flash-message {
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    text-align: center;
+    animation: fadeIn 0.3s ease-in;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.flash-message.error {
+    background-color: rgba(255, 87, 87, 0.9);
+    color: white;
+}
+
+.flash-message.success {
+    background-color: rgba(75, 181, 67, 0.9);
+    color: white;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 .form-container {
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);

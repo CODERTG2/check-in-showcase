@@ -18,7 +18,7 @@ const EntrySchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    robotNumber: {
+    robot: {
         type: String,
         required: true
     },

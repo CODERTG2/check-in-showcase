@@ -18,15 +18,29 @@
     <div class="banner">
         <h1>2025 Annual Robotics Showcase</h1>
         <div class="banner-left">
-            <button class="refresh" onclick="">Refresh</button>
+            <button class="refresh" onclick="updateSheet()">Refresh</button>
             <%if (locals.update) {%>
                 <p>Needs to be updated</p>
+                <%locals.update = false%>
             <%} else {%>
                 <p>Updated!</p>
             <%}%>
         </div>
     </div>
-    
+    <% if(messages = locals.flash) { %>
+        <div class="flash-messages">
+            <% if(messages.error) { %>
+                <div class="flash-message error">
+                    <%= messages.error %>
+                </div>
+            <% } %>
+            <% if(messages.success) { %>
+                <div class="flash-message success">
+                    <%= messages.success %>
+                </div>
+            <% } %>
+        </div>
+    <% } %>
     <div class="form-container">
         <h1>Welcome!</h1>
         <form action="/home" method="POST">
@@ -40,5 +54,10 @@
             <button type="submit">Register</button>
         </form>
     </div>
+    <script>
+        function updateSheet() {
+            
+        }
+    </script>
 </body>
 </html>

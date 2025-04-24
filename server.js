@@ -11,6 +11,14 @@ const connectDB = require('./config/db');
 const Entry = require('./models/Entry');
 connectDB();
 
+const fs = require('fs');
+const sheetsService = require('./services/gsheet/sheet_service');
+sheetsService.initialize(JSON.parse(fs.readFileSync(path.join(__dirname, 'config', 'Credentials.json'))), 
+    process.env.SPREADSHEET_ID);
+
+const teams = JSON.parse(fs.readFileSync(path.join(__dirname, 'config', 'FLL.json')));
+const robots = JSON.parse(fs.readFileSync(path.join(__dirname, 'config', 'Robots.json')));
+
 const app = express();
 
 app.set('view engine', 'ejs');
@@ -26,19 +34,35 @@ app.use(session({
 }));
 app.use(flash());
 
+app.use((req, res, next) => {
+    res.locals.flash = req.flash();
+    next();
+});
+
 app.get('/', (req, res) => {
-    res.render('home');
+    res.render('home', {updated: true});
 });
 
 app.post('/home', (req, res) => {
     const {name, teamNumber, robotNumber, entryType} = req.body;
+    const team = teams.find(t => t["Team Number"] === String(teamNumber));
+    const robot = robots.find(r => r["Robot Number"] === String(robotNumber));
+
+    if (!team) {
+        req.flash('error', 'Team not found');
+        return res.redirect('/home');
+    }
+    if (!robot) {
+        req.flash('error', 'Robot not found');
+        return res.redirect('/home');
+    }
 
     const newEntry = new Entry({
         name,
         teamNumber,
-        school,
-        coach,
-        robotNumber,
+        school: team["School"],
+        coach: team["Coach"],
+        robot: robot["Robot Name"],
         entryType
     });
     newEntry.save()
