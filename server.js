@@ -16,7 +16,7 @@ const GoogleSheetsService = require('./services/gsheet/sheet_service');
 const sheetsService = new GoogleSheetsService(JSON.parse(fs.readFileSync(path.join(__dirname, 'config', 'Credentials.json'))), process.env.SPREADSHEET_ID);
 sheetsService.initialize()
 
-const teams = JSON.parse(fs.readFileSync(path.join(__dirname, 'config', 'FLL.json')));
+// const teams = JSON.parse(fs.readFileSync(path.join(__dirname, 'config', 'FLL.json')));
 const robots = JSON.parse(fs.readFileSync(path.join(__dirname, 'config', 'Robot.json')));
 
 const app = express();
@@ -51,14 +51,14 @@ app.get('/', (req, res) => {
 });
 
 app.post('/home', (req, res) => {
-    const {name, teamNumber, barcode, entryType} = req.body;
-    const team = teams.find(t => t["Team Number"] === String(teamNumber));
+    const {name, teamNumber, school, coach, barcode, entryType} = req.body;
+    // const team = teams.find(t => t["Team Number"] === String(teamNumber));
     const robot = robots.find(r => r["Barcode"] === String(barcode));
 
-    if (!team) {
-        req.flash('error', 'Team not found');
-        return res.redirect('/');
-    }
+    // if (!team) {
+    //     req.flash('error', 'Team not found');
+    //     return res.redirect('/');
+    // }
     if (!robot) {
         req.flash('error', 'Robot not found');
         return res.redirect('/');
@@ -67,8 +67,8 @@ app.post('/home', (req, res) => {
     const newEntry = new Entry({
         name,
         teamNumber: parseInt(teamNumber),
-        school: team["School"],
-        coach: team["Coach"],
+        school,
+        coach,
         robot: robot["Robot"],
         entryType
     });
