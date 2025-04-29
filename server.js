@@ -66,7 +66,6 @@ app.post('/home', (req, res) => {
 
     const newEntry = new Entry({
         name,
-        teamNumber: parseInt(teamNumber),
         school,
         coach,
         robot,
