@@ -6,10 +6,6 @@ const EntrySchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    teamNumber: {
-        type: Number,
-        required: true
-    },
     school: {
         type: String,
         required: true
