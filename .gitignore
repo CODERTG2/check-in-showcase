@@ -1,5 +1,6 @@
 /node_modules
 /.env
 /config/Credentials.json
-/config/FLL.json
-/config/Robot.json
+# /config/FLL.json
+# /config/Robot.json
+/config/School.json

@@ -33,8 +33,12 @@
         <% } %>
         <form action="/home" method="POST">
             <input type="text" name="name" placeholder="Name" required>
-            <input type="text" name="school" placeholder="School" required>
-            <input type="text" name="coach" placeholder="Coach" required>
+            <select class="custom-select" name="school" required>
+                <option value="" disabled selected>Select School</option>
+                <% schools.forEach(function(school) { %>
+                    <option value="<%= school.school %>"><%= school.school %></option>
+                <% }); %>
+            </select>
             <input type="text" name="robot" placeholder="Robot" required>
             <select class="custom-select" name="entryType" required>
                 <option value="out">Checking Out</option>

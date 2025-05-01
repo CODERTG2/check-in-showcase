@@ -18,6 +18,7 @@ sheetsService.initialize()
 
 // const teams = JSON.parse(fs.readFileSync(path.join(__dirname, 'config', 'FLL.json')));
 // const robots = JSON.parse(fs.readFileSync(path.join(__dirname, 'config', 'Robot.json')));
+const schools = JSON.parse(fs.readFileSync(path.join(__dirname, 'config', 'School.json')));
 
 const app = express();
 
@@ -47,27 +48,28 @@ app.get('/', (req, res) => {
     else {
         errormsg = null;
     }
-    res.render('home', {updated: false, message: errormsg});
+    res.render('home', {updated: false, message: errormsg, schools: schools});
 });
 
 app.post('/home', (req, res) => {
-    const {name, teamNumber, school, coach, robot, entryType} = req.body;
-    // const team = teams.find(t => t["Team Number"] === String(teamNumber));
-    // const robot = robots.find(r => r["Barcode"] === String(barcode));
-
-    // if (!team) {
-    //     req.flash('error', 'Team not found');
-    //     return res.redirect('/');
-    // }
-    // if (!robot) {
-    //     req.flash('error', 'Robot not found');
-    //     return res.redirect('/');
-    // }
+    const {name, school, robot, entryType} = req.body;
+    
+    // Find the coach information based on selected school
+    const schoolInfo = schools.find(s => s.school === school);
+    
+    if (!schoolInfo) {
+        req.flash('error', 'School not found');
+        return res.redirect('/');
+    }
+    
+    const coach = schoolInfo.coach;
+    const coachEmail = schoolInfo.email;
 
     const newEntry = new Entry({
         name,
         school,
         coach,
+        coachEmail,
         robot,
         entryType
     });

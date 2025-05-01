@@ -14,6 +14,11 @@ const EntrySchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    coachEmail: {
+        type: String,
+        required: true,
+        default: ''
+    },
     robot: {
         type: String,
         required: true
