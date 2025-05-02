@@ -28,9 +28,9 @@ class GoogleSheetsService {
             const rows = entries.map(entry => [
                 new Date().toISOString(),
                 entry.name,
-                entry.teamNumber,
                 entry.school,
                 entry.coach,
+                entry.coachEmail,
                 entry.robot,
                 entry.entryType
             ]);
